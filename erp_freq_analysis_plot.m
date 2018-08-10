@@ -65,18 +65,18 @@ for s = 1:length(S.subjects)
     [condlabels,~]=strtok(S.conds,'_');
 
     % plot topographies for each condition
-    ttl = condlabels;
-    lgnd = {};
-    scalezero = 0;
-    plot_freq(S,ttl,lgnd,scalezero)
+    %ttl = condlabels;
+    %lgnd = {};
+    %scalezero = 0;
+    %plot_freq(S,ttl,lgnd,scalezero)
     % all frequencies for each condition
     ttl = 'Power at each frequency (no baseline correction)';
     lgnd = condlabels;
     plot_allfreq(S,ttl,lgnd)
     % over time for each condition
-    ttl = 'Power over time (no baseline correction)';
-    lgnd = condlabels;
-    plot_movavg(S,ttl,lgnd,0)
+    %ttl = 'Power over time (no baseline correction)';
+    %lgnd = condlabels;
+    %plot_movavg(S,ttl,lgnd,0)
 
     % Ratio baseline correction
     S=event_operation(S,1);
@@ -90,25 +90,25 @@ for s = 1:length(S.subjects)
     lgnd = condlabels(1:4);
     plot_allfreq(S,ttl,lgnd)
     % Ratio baseline correction: over time for each condition
-    ttl = 'Baseline corrected: Power over time';
-    lgnd = condlabels(1:4);
-    plot_movavg(S,ttl,lgnd,0)
+    %ttl = 'Baseline corrected: Power over time';
+    %lgnd = condlabels(1:4);
+    %plot_movavg(S,ttl,lgnd,0)
 
     % condition subtraction
     S=event_operation(S,2);
     % plot topographies for each condition
-    ttl = {'7Hz - 1Hz','10Hz - 1Hz','23Hz - 1Hz'};
+    ttl = {'10Hz - 1Hz','23Hz-1Hz','7Hz - 1Hz'};
     lgnd = {};
     scalezero = 0;
     plot_freq(S,ttl,lgnd,scalezero)
     % Ratio baseline correction: plot all frequencies for each condition
     ttl = 'Subtracted: Entrainment effect at each frequency';
-    lgnd = {'7Hz - 1Hz','10Hz-1Hz','23Hz - 1Hz'};
+    lgnd = {'10Hz - 1Hz','23Hz-1Hz','7Hz - 1Hz'};
     plot_allfreq(S,ttl,lgnd)
     % Ratio baseline correction: over time for each condition
-    ttl = 'Subtracted: Entrainment effect over time';
-    lgnd = {'7Hz - 1Hz','10Hz-1Hz','23Hz - 1Hz'};
-    plot_movavg(S,ttl,lgnd,0)
+    %ttl = 'Subtracted: Entrainment effect over time';
+    %lgnd = {'7Hz - 1Hz','10Hz-1Hz','23Hz - 1Hz'};
+    %plot_movavg(S,ttl,lgnd,0)
 
     %S=freq_operation(S,3);
     %plot_freq(S,0)

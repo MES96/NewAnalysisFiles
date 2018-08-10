@@ -24,12 +24,13 @@ for s = 1:length(S.subjects)
     % FIND THE FILES FOR THIS SUBJECT
     subfiles = S.filelist(find(not(cellfun('isempty', strfind(S.filelist,S.subjects{s})))));
     % FIND THE FILES FOR THIS BLOCK
-    blockfiles = subfiles(find(not(cellfun('isempty', strfind(subfiles,S.blocks{S.blockselect})))));
+    %blockfiles = subfiles(find(not(cellfun('isempty', strfind(subfiles,S.blocks{S.blockselect})))));
     
     % get the data
     for c = 1:length(S.conds)
         % get filename
-        file = blockfiles(find(not(cellfun('isempty', strfind(blockfiles,S.conds{c})))));
+        %file = blockfiles(find(not(cellfun('isempty', strfind(blockfiles,S.conds{c})))));
+        file = subfiles(find(not(cellfun('isempty', strfind(subfiles,S.conds{c})))));
         if length(file)~=1
             error('file name not uniquely specified')
         end

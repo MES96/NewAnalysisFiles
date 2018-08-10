@@ -11,7 +11,8 @@ if strcmp(S.analysistype,'ERP')
 %    times = -0.2:0.004:0.796;
 elseif strcmp(S.analysistype,'TF')
 %    dp = 181;
-    S.nf = length(S.freqsrange);
+    %S.nf = length(S.freqsrange);
+    S.nf = length(20:1:25);
 %    intimes = -0.2:0.004:0.796;
 end
 if strcmp(S.analysistype,'ERP') && S.CSD.apply 

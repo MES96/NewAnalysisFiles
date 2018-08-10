@@ -20,16 +20,18 @@ addpath(genpath(support_path));
 % Any of the elements can be left out. But all must be separated by underscores.
 
 clear S 
-S.rawpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Pilot 2\Raw'; % unprocessed data in original format
-S.setpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Pilot 2\Sets and preprocessed'; % folder to save processed .set data
-S.freqpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Pilot 2\Frequency'; % folder to save processed .set data
-S.erppath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Pilot 2\ERP'; % folder to save processed .set data
-S.fnameparts = {'study','subject','block', 'cond'}; % parts of the input filename separated by underscores, e.g.: {'study','subject','session','block','cond'};
-S.subjects = {'P4'}; % either a single subject, or leave blank to process all subjects in folder
+S.rawpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Pilot 3-6\Pilot 4\Raw'; % unprocessed data in original format
+S.setpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Pilot 3-6\Pilot 4\Sets and preprocessed'; % folder to save processed .set data
+S.freqpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Pilot 3-6\Pilot 4\\Frequency'; % folder to save processed .set data
+S.erppath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Pilot 3-6\Pilot 4\ERP'; % folder to save processed .set data
+S.fnameparts = {'subject','block','cond'}; % parts of the input filename separated by underscores, e.g.: {'study','subject','session','block','cond'};
+S.subjects = {}; % either a single subject, or leave blank to process all subjects in folder 'P1', 'P2', 'P3', 
 S.sessions = {};
-S.blocks = {}; % blocks to load (each a separate file) - empty m+eans all of them, or not defined
-S.conds = {'1HC.', '1HO.', '1LC.', '1LO.', '10HC.', '10HO.', '10LC.', '10LO.'}; % eventitions to load (each a separate file) - empty means all of them, or not defined
-S.datfile = '\\nask.man.ac.uk\home$\GitHub\EEGLABworkshops2018-master\Participant_data.xlsx'; % .xlsx file to group participants; contains columns named 'Subject', 'Group', 'Include' and any covariates of interest
+S.blocks = {};
+S.conds = {'1O.','1.','10.','10O.'};
+%S.blocks = {'ECA', 'ECB'}; % blocks to load (each a separate file) - empty m+eans all of them, or not defined
+%S.conds = {'1RS.', '1.', '1ORS.', '1O.', '10RS.', '10.', '10ORS.', '10O.'}; % eventitions to load (each a separate file) - empty means all of them, or not defined
+S.datfile = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Pilot 3-6\Pilot 4\Participant_datap4.xlsx'; % .xlsx file to group participants; contains columns named 'Subject', 'Group', 'Include' and any covariates of interest
 save(fullfile(S.setpath,'S'),'S'); % saves 'S' - will be overwritten each time the script is run, so is just a temporary variable
 
 %% 1. DATA IMPORT
@@ -42,7 +44,7 @@ load(fullfile(S.setpath,'S'))
 S.loadext = 'vhdr'; % file extension of input data: supports 'vhdr' (Brainvision), 'cnt' (Neuroscan), 'mff' (EGI - requires mffimport2.0 toolbox)
 S.saveprefix = ''; % prefix to add to output file, if needed
 S.savesuffix = ''; % suffix to add to output file, if needed
-S.chan.excl = [22 32]; % exclude channels, or leave empty as []
+S.chan.excl = [32]; % exclude channels, or leave empty as []
 S.chan.addloc = 'C:\Work\eeglab14_1_1b\plugins\dipfit2.3\standard_BESA\standard-10-5-cap385.elp'; % add channel locations from this path; or leave as ''
 % RUN
 S=eeglab_import(S);
@@ -53,7 +55,7 @@ save(fullfile(S.setpath,'S'),'S'); % saves 'S' - will be overwritten each time t
 load(fullfile(S.setpath,'S'))
 S.loadext = 'set';
 S.cont.timewin = {[],[],[],[]}; % timewindow (s) of data to analyse; one per S.conds. Blank = analyse all.
-S.downsample = 125;
+S.downsample = 500;
 S.chan.addloc = 'C:\Work\eeglab14_1_1b\plugins\dipfit2.3\standard_BESA\standard-10-5-cap385.elp'; % add channel locations from this path; or leave as ''
 S.chan.interp = [];
 S.chan.reref = 2;
@@ -78,7 +80,7 @@ save(fullfile(S.setpath,'S'),'S'); % saves 'S' - will be overwritten each time t
 dbstop if error
 load(fullfile(S.setpath,'S'))
 S.loadext = 'combined_ICA.set'; %once ICA is completed the file is saved as 'ICA.set'- is that the file we reject components in (and therefore the one that should be loaded here)
-S.subjects= {'P4'}; S.sessions={};S.blocks={};S.conds={};
+S.subjects= {'NTIPP1'}; S.sessions={};S.blocks={};S.conds={};
 S.ICAremove = 1; % remove ICA components (0 if already removed from data, 1 if selected but not removed)
 S.detrend = 0;
 S.rmbase = 0;
@@ -101,7 +103,7 @@ load(fullfile(S.setpath,'S'))
 S.loadext = 'cleaned.set';% generic file suffix
 S.sessions = {};
 S.blocks = {}; % blocks to load (each a separate file) - empty means all of them, or not defined
-S.conds = {'1HC', '1HO', '1LC', '1LO', '10HC', '10HO', '10LC', '10LO'}; % eventitions to load (each a separate file) - empty means all of them, or not defined
+S.conds = {'1RS', '1', '1ORS', '1O', '10RS', '10', '10ORS', '10O'}; % eventitions to load (each a separate file) - empty means all of them, or not defined
 % general settings
 S.basewin = [-0.2 0]; % baseline window
 S.rmbase = 1; % remove baseline prior to frequency/ERP
@@ -112,7 +114,7 @@ S.analysistype = 'Freq'; %'Freq','TF','Coh','ERP'
 % freq analysis settings
 S.freqtype = 'both'; % induced or both
 S.baselinetype = 'relative'; % for TF analysis only: 'absolute', 'relative', 'relchange', 'normchange'
-S.freqsrange = [6:1:14]; % select frequency range and resolution (if freq analysis). 1D array produces all freqs enteredl 2D array uses ranges, e.g. [0 4; 4 8; 8 13; 13 30; 30 40];
+S.freqsrange = [8:2:14]; % select frequency range and resolution (if freq analysis). 1D array produces all freqs enteredl 2D array uses ranges, e.g. [0 4; 4 8; 8 13; 13 30; 30 40];
 S.mov_avg_trials = 100; % N trials: average EEG power over trials using a moving average window
 S.mov_avg_trials_step = 100;
 S.bootrep = 50;% Bootstraps repetitions (for coherence analysis only)
@@ -125,11 +127,17 @@ save(fullfile(S.setpath,'S'),'S'); % saves 'S' - will be overwritten each time t
 
 %% 4. PLOT FREQUENCY
 close all
+dbstop if error
 load(fullfile(S.setpath,'S'))
 S.sessions = {};
 S.blocks = {}; % blocks to load (each a separate file) - empty means all of them, or not defined
 %S.conds = {'_1HC_', '_1HO_', '_1LC_', '_1LO_', '_10HC_', '_10HO_', '_10LC_', '_10LO_'}; % eventitions to load (each a separate file) - empty means all of them, or not defined
-S.conds = {'1HC', '1HO', '1LC', '1LO', '10HC', '10HO', '10LC', '10LO'};
+%S.conds = {'1HC', '1HO', '1LC', '1LO', '10HC', '10HO', '10LC', '10LO'};
+%S.blocks = {'ECA', 'ECB'}; % blocks to load (each a separate file) - empty m+eans all of them, or not defined
+%S.conds = {'1RS', '1', '1ORS', '1O', '10RS', '10', '10ORS', '10O'}; % eventitions to load (each a separate file) - empty means all of them, or not defined
+S.freqsrange = [6:1:14];
+S.mov_avg_trials = 25; % N trials: average EEG power over trials using a moving average window
+S.mov_avg_trials_step = 25;
 S.freqselect = 10;
 S.blockselect = 1;
 S.eventselect = 1:11;%[1:9];
@@ -138,12 +146,12 @@ S.exclchan = [];
 %participant_eventorder = [1 1]; % normal or reversed ordering. One value per subject.
 % data operation 1
 S.op(1).type = 'event';
-S.op(1).operation = 'normchange' %'subtract', 'relative', 'relchange', 'normchange' or 'db'
-S.op(1).grouping = [5 1; 6 2; 7 3; 8 4]; % e.g. for subtraction or dividing
+S.op(1).operation = 'subtract' %'subtract', 'relative', 'relchange', 'normchange' or 'db'
+S.op(1).grouping = [2 1; 4 3; 6 5; 8 7]; % e.g. for subtraction or dividing
 % data operation 2
 S.op(2).type = 'event';
 S.op(2).operation = 'subtract' %'subtract', 'relative', 'relchange', 'normchange' or 'db'
-S.op(2).grouping = [1 2; 3 4; 1 3; 2 4]; % e.g. for subtraction or dividing
+S.op(2).grouping = [2 1; 4 3]; % e.g. for subtraction or dividing
 % data operation 3
 %S.op(3).type = 'freq';
 %S.op(3).operation = 'subtract'

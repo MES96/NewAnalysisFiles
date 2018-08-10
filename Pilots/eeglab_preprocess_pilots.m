@@ -124,6 +124,7 @@ end
 if S.combinefiles
     clear OUTEEG
     
+    S.conds = {'1O','1','10','10O'};
     % GET FILE LIST
     S.filepath = S.setpath;
     %S.loadext=sname_ext;

@@ -22,12 +22,12 @@ support_path = 'P:\GitHub\NewAnalysisFiles\Functions';
 clear S 
 S.rawpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Study\Raw'; % unprocessed data in original format
 S.setpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Study\Sets and preprocessed'; % folder to save processed .set data
-S.freqpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Study\Frequency'; % folder to save processed .set data
+S.freqpath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Study\Frequency\UNC'; % folder to save processed .set data
 S.erppath = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Study\ERP'; % folder to save processed .set data
 S.fnameparts = {'study','subject','block', 'cond'}; % parts of the input filename separated by underscores, e.g.: {'study','subject','session','block','cond'};
 S.subjects = {'0001', '0003', '0007', '0012', '0023', '0024', '0025', '0026', '0027', '0028', '0029', '0030', '0031', '0032'}; % either a single subject, or leave blank to process all subjects in folder
 S.sessions = {};
-S.blocks = {'COM', 'UNC'}; % blocks to load (each a separate file) - empty m+eans all of them, or not defined
+S.blocks = {'UNC'}; % 'COM',  blocks to load (each a separate file) - empty m+eans all of them, or not defined
 %S.conds = {'seq1.', 'seq2.', 'seq3.', 'seq4.'}; % eventitions to load (each a separate file) - empty means all of them, or not defined
 S.conds = {'seq1.', 'seq2.', 'seq3.', 'seq4.'};
 S.datfile = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Study\Analysis_participant_data.xlsx'; % .xlsx file to group participants; contains columns named 'Subject', 'Group', 'Include' and any covariates of interest
@@ -117,7 +117,7 @@ S.analysistype = 'Freq'; %'Freq','TF','Coh','ERP'
 % freq analysis settings
 S.freqtype = 'both'; % induced or both
 S.baselinetype = 'relative'; % for TF analysis only: 'absolute', 'relative', 'relchange', 'normchange'
-S.freqsrange = [1 7 10 23]; % select frequency range and resolution (if freq analysis). 1D array produces all freqs enteredl 2D array uses ranges, e.g. [0 4; 4 8; 8 13; 13 30; 30 40];
+S.freqsrange = [20:1:25]; % select frequency range and resolution (if freq analysis). 1D array produces all freqs enteredl 2D array uses ranges, e.g. [0 4; 4 8; 8 13; 13 30; 30 40];
 S.mov_avg_trials = 25; % N trials: average EEG power over trials using a moving average window
 S.mov_avg_trials_step = 25;
 S.bootrep = 50;% Bootstraps repetitions (for coherence analysis only)
@@ -161,7 +161,11 @@ save(fullfile(S.setpath,'S'),'S'); % saves 'S' - will be overwritten each time t
 %% 4. PLOT FREQUENCY
 close all
 load(fullfile(S.setpath,'S'));
+
 S.conds = {'seqA_epoched_base', 'seqB_epoched_base', 'seqC_epoched_base', 'seqD_epoched_base', 'seqA_epoched_entrain', 'seqB_epoched_entrain', 'seqC_epoched_entrain', 'seqD_epoched_entrain'};
+S.freqsrange = [6:1:14];
+S.mov_avg_trials = 25; % N trials: average EEG power over trials using a moving average window
+S.mov_avg_trials_step = 25;
 S.freqselect = 10;
 S.blockselect = 1;
 S.eventselect = 1:6;%[1:9];
@@ -175,7 +179,7 @@ S.op(1).grouping = [5 1; 6 2; 7 3; 8 4]; % e.g. for subtraction or dividing
 % data operation 2
 S.op(2).type = 'event';
 S.op(2).operation = 'subtract' %'subtract', 'relative', 'relchange', 'normchange' or 'db'
-S.op(2).grouping = [1 2; 3 2; 4 2]; % e.g. for subtraction or dividing
+S.op(2).grouping = [1 3; 2 3; 4 3]; % e.g. for subtraction or dividing
 % data operation 3
 %S.op(3).type = 'freq';
 %S.op(3).operation = 'subtract'

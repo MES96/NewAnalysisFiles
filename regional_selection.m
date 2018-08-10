@@ -1,5 +1,7 @@
-%Practice for one file
-
+%Region/area selection from chanlocs2 file. Doesn't loop, manually had to
+%move each file to dname to get them to save in the group. Put all files
+%for one participant into file and will save at the end as one file. COM
+%values (SeqA-D) are first then UNC values (SeqA-D). 
 load chanlocs2
 
 dname = 'Y:\Marie Shorrock\NTIP\Auditory Entrainment Study\Frequency\Region';
@@ -28,7 +30,7 @@ for f= 1:length(entrainfiles)
     nArea = length(uArea); %find the number of areas
 
     for r = 1:nArea
-           av_area(f,r,:) = mean(av(area,uArea(r),:)); %creates a 3D array but we can't copy this into SPSS for stats, therefore it needs to be reduced to be 2D array ==
+           av_area(f,r,:) = mean(av(area,uArea(r),:)); 
     end
 
     av_area = permute(av_area,[1 3 2]); %this swaps the second and third one
